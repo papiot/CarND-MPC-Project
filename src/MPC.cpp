@@ -22,8 +22,8 @@ double dt = 0.05;
 const int latency_step = 2;   // to compensate system latency
 
 
-double delta_ = 0;
-double a_ = 0;
+double prev_delta = 0;
+double prev_a = 0;
 
 
 // This value assumes the model presented in the classroom is used.
@@ -190,8 +190,8 @@ MPC_SOL MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
   
   // do not change steering during latency
   for (int i = deltaPsi_start; i < deltaPsi_start + latency_step; i++) {
-    vars_lowerbound[i] = delta_;
-    vars_upperbound[i] = delta_;
+    vars_lowerbound[i] = prev_delta;
+    vars_upperbound[i] = prev_delta;
   }
   
   // acceleration: [-1, 1]
@@ -202,8 +202,8 @@ MPC_SOL MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
   
   // do not change acceleration during latency
   for (int i = a_start; i < a_start + latency_step; i++) {
-    vars_lowerbound[i] = a_;
-    vars_upperbound[i] = a_;
+    vars_lowerbound[i] = prev_a;
+    vars_upperbound[i] = prev_a;
   }
   
 
@@ -281,8 +281,8 @@ MPC_SOL MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
     result.a.push_back(solution.x[a_start+i+latency_step]);
   }
   
-  delta_ = solution.x[deltaPsi_start + latency_step];
-  a_ = solution.x[a_start + latency_step];
+  prev_delta = solution.x[deltaPsi_start + latency_step];
+  prev_a = solution.x[a_start + latency_step];
   
   return result;
 
