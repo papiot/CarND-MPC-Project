@@ -42,23 +42,26 @@ With fixed N and large dt, the car oscillates too much
 100ms latency is used in the system to stimulate real-life environment.
 To included the latency effect, the next state of the vehicle for the period of latency calculated as follows:
 
-  // do not change steering during latency
-  for (int i = deltaPsi_start; i < deltaPsi_start + latency_step; i++) {
-    vars_lowerbound[i] = delta_;
-    vars_upperbound[i] = delta_;
-  }
-  
-    // do not change acceleration during latency
-  for (int i = a_start; i < a_start + latency_step; i++) {
-    vars_lowerbound[i] = a_;
-    vars_upperbound[i] = a_;
-  }
+```
+    // do not change steering during latency
+    for (int i = deltaPsi_start; i < deltaPsi_start + latency_step; i++) {
+      vars_lowerbound[i] = delta_;
+      vars_upperbound[i] = delta_;
+    }
+    
+      // do not change acceleration during latency
+    for (int i = a_start; i < a_start + latency_step; i++) {
+      vars_lowerbound[i] = a_;
+      vars_upperbound[i] = a_;
+    }
+```
 
   The previous acceleration and steering values are calculated at the end of the step and used in the next step
-  
-  delta_ = solution.x[deltaPsi_start + latency_step];
-  a_ = solution.x[a_start + latency_step];
 
+```
+    delta_ = solution.x[deltaPsi_start + latency_step];
+    a_ = solution.x[a_start + latency_step];
+```
 
 
 
