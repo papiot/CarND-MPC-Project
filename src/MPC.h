@@ -6,6 +6,16 @@
 
 using namespace std;
 
+
+// Easier to manipulate the data
+struct MPC_SOL {
+  vector<double> x;
+  vector<double> y;
+  vector<double> delta;
+  vector<double> a;
+};
+
+
 class MPC {
  public:
   MPC();
@@ -14,7 +24,8 @@ class MPC {
 
   // Solve the model given an initial state and polynomial coefficients.
   // Return the first actuatotions.
-  vector<double> Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs);
+  MPC_SOL Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs);
+
 };
 
 #endif /* MPC_H */
